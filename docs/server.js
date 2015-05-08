@@ -17,12 +17,15 @@ if (development) {
   let target = `http://localhost:${webpackPort}`;
 
   app.get('/assets/*', function (req, res) {
-    proxy.web(req, res, { target });
+    throw new Error('Invalid Request! Should be make request against webpack-dev-server proxy');
   });
 
   app.use(function renderApp(req, res) {
+    res.header('Access-Control-Allow-Origin', target);
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With');
+
     Router.run(routes, req.url, Handler => {
-      let html = React.renderToString(<Handler />);
+      let html = React.renderToString(<Handler assetBaseUrl={target} />);
       res.send(html);
     });
   });

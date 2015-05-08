@@ -51,7 +51,7 @@ portfinder.getPorts(2, {}, (portFinderErr, [docsPort, webpackPort]) => {
     process.exit(1);
   }
 
-  exec(`nodemon --watch webpack --watch webpack.config.js --watch node_modules --exec webpack-dev-server -- --quiet --config webpack.docs.js --color --port ${webpackPort}`)
+  exec(`nodemon --watch webpack --watch webpack.config.js --watch node_modules --exec webpack-dev-server -- --config webpack.docs.js --color --port ${webpackPort} --debug --hot`)
     .progress(childProcess => {
       listen(childProcess, 'webpack-dev-server');
       webpackDevServer = childProcess;
