@@ -51,7 +51,7 @@ portfinder.getPorts(2, {}, (portFinderErr, [docsPort, webpackPort]) => {
     process.exit(1);
   }
 
-  exec(`webpack-dev-server --quiet --config webpack.docs.js --color --port ${webpackPort}`)
+  exec(`nodemon --watch webpack --watch webpack.config.js --watch node_modules --exec webpack-dev-server -- --quiet --config webpack.docs.js --color --port ${webpackPort}`)
     .progress(childProcess => {
       listen(childProcess, 'webpack-dev-server');
       webpackDevServer = childProcess;
@@ -60,7 +60,7 @@ portfinder.getPorts(2, {}, (portFinderErr, [docsPort, webpackPort]) => {
     .then(() => console.log('Shutdown: '.cyan + 'webpack-dev-server'.green))
     .catch(err => catchExec('webpack-dev-server', err));
 
-  exec('nodemon --exec babel-node docs/server.js', {
+  exec('nodemon --watch docs --watch src --watch node_modules --exec babel-node docs/server.js', {
       env: {
         PORT: docsPort,
         WEBPACK_DEV_PORT: webpackPort,
